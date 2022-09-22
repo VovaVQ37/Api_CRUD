@@ -12,10 +12,13 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 from datetime import timedelta
 
 from django.conf import settings
+
+from firebase_admin import initialize_app
+FIREBASE_APP = initialize_app()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,7 +41,16 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+
+    #'DEFAULT_RENDERER_CLASSES': (
+        #'rest_framework.renderers.JSONRenderer',
+    #),
+    #'DEFAULT_PARSER_CLASSES': (
+        #'rest_framework.parsers.JSONParser',
+    #)
 }
+
+
 
 
 # Application definition
@@ -54,6 +66,13 @@ INSTALLED_APPS = [
     'django_filters',
     'authentication',
     'movies',
+    'rest_framework_swagger',
+    'drf_yasg',
+    'fcm_django',
+    'file_upload',
+    'fcm',
+    'firebase',
+
 ]
 
 SITE_ID = 1
@@ -164,3 +183,19 @@ SIMPLE_JWT = {
 'SLIDING_TOKEN_LIFETIME': timedelta(days=10),
 'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=20),
 }
+
+
+FCM_DJANGO_SETTINGS = {
+     # default: _('FCM Django')
+    "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+     # true if you want to have only one active device per registered user at a time
+     # default: False
+    "ONE_DEVICE_PER_USER": True,
+     # devices to which notifications cannot be sent,
+     # are deleted upon receiving error response from FCM
+     # default: False
+    "DELETE_INACTIVE_DEVICES": True,
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "file_upload/media")

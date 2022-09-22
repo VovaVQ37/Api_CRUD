@@ -1,8 +1,10 @@
 from django.urls import path
-from . import views
 
+from .views import ListTitleMovieApiView, ListIdMovieApiView, ListCreateMovieAPIView, RetrieveUpdateDestroyMovieAPIView
 
 urlpatterns = [
-    path('', views.ListCreateMovieAPIView.as_view(), name='get_post_movies'),
-    path('<int:pk>/', views.RetrieveUpdateDestroyMovieAPIView.as_view(), name='get_delete_update_movie'),
+    path('moviesTitles/', ListTitleMovieApiView.as_view(), name='get_post_movies_titles'),
+    path('movies/id/', ListIdMovieApiView.as_view(), name='get_post_movies_id'),
+    path('movies/', ListCreateMovieAPIView.as_view(), name='get_post_movies'),
+    path('', RetrieveUpdateDestroyMovieAPIView.as_view(), name='get_delete_update_movie'),
 ]
