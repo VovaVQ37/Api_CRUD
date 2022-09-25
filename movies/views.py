@@ -9,6 +9,7 @@ from .permissions import IsOwnerOrReadOnly
 from .serializers import MovieSerializer
 from .serializers import MovieTitleSerializer
 from .serializers import MovieIdSerializer
+from .serializers import MovieGenreSerializer
 from .pagination import CustomPagination
 from .filters import MovieFilter
 
@@ -46,7 +47,10 @@ class ListTitleMovieApiView(ListCreateAPIView):
 
 
 
-
+class ListTitleMovieApiView(ListCreateAPIView):
+    serializer_class = MovieGenreSerializer
+    queryset = Movie.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 
