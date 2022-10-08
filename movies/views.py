@@ -12,6 +12,12 @@ from .serializers import MovieIdSerializer
 from .serializers import MovieGenreSerializer
 from .pagination import CustomPagination
 from .filters import MovieFilter
+from aiohttp import web
+from django.apps import apps
+from django.core.serializers import serialize
+from mymoviedb.utils import database_sync_to_async
+
+routes = web.RouteTableDef()
 
 class ListIdMovieApiView(ListCreateAPIView):
     serializer_class = MovieIdSerializer
@@ -53,6 +59,18 @@ class ListTitleMovieApiView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
 
+#@routes.view('/movies')
+class MoviesListView(web.View):
+    model = 'movies.Movie'
+
+    async def get_queryset(self, **kwargs):
+        model = apps.get_model(self.model)
+        return await database_sync_to_async(model.objects.all)()
+
+    async def get(self):
+        queryset = await self.get_queryset()
+        text = serialize('json', queryset)
+        return web.json_response(text=text)
 
 
 
